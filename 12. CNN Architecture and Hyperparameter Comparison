@@ -1,0 +1,38 @@
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+
+(X_train,y_train),(X_test,y_test) = tf.keras.datasets.mnist.load_data()
+
+X_train = X_train[...,np.newaxis]/255.0
+X_test = X_test[...,np.newaxis]/255.0
+
+models = []
+
+for filters in [16,32,64]:
+    m = tf.keras.Sequential([
+        tf.keras.layers.Conv2D(filters,(3,3),
+                               activation="relu",
+                               input_shape=(28,28,1)),
+        tf.keras.layers.MaxPooling2D(),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(64,activation="relu"),
+        tf.keras.layers.Dense(10,activation="softmax")
+    ])
+
+    m.compile("adam","sparse_categorical_crossentropy",
+              metrics=["accuracy"])
+
+    h = m.fit(X_train,y_train,epochs=3,
+              validation_split=.1,verbose=0)
+
+    acc = m.evaluate(X_test,y_test,verbose=0)[1]
+    models.append(acc)
+
+    print("Filters:", filters, "Accuracy:", acc)
+
+plt.plot([16,32,64],models,"o-")
+plt.xlabel("Number of Filters")
+plt.ylabel("Test Accuracy")
+plt.title("CNN Hyperparameter Comparison")
+plt.show()
