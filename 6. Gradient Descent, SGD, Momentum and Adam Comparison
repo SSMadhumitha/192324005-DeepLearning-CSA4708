@@ -1,0 +1,32 @@
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+
+x = np.array([1,2,3,4,5], dtype=float)
+y = 2*x
+
+optimizers = [
+    tf.keras.optimizers.SGD(0.01),
+    tf.keras.optimizers.SGD(0.01, momentum=0.9),
+    tf.keras.optimizers.Adam(0.01)
+]
+
+for opt in optimizers:
+    w = tf.Variable(0.0)
+    loss = []
+
+    for i in range(100):
+        with tf.GradientTape() as tape:
+            l = tf.reduce_mean((w*x-y)**2)
+        g = tape.gradient(l, w)
+        opt.apply_gradients([(g, w)])
+        loss.append(l.numpy())
+
+    print(type(opt).__name__, "Final Weight:", w.numpy())
+    plt.plot(loss, label=str(opt))
+
+plt.xlabel("Iterations")
+plt.ylabel("Loss")
+plt.title("Optimizer Comparison")
+plt.legend()
+plt.show()
