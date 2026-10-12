@@ -1,0 +1,19 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+x = np.linspace(30, 90, 100)
+y = norm.pdf(x, 60, 10)
+
+plt.plot(x, y)
+plt.title("Normal Distribution")
+plt.xlabel("Value")
+plt.ylabel("Probability")
+plt.show()
+
+PA = 0.01
+PB_A = 0.95
+PB = 0.05
+
+PA_B = (PB_A * PA) / PB
+print("P(A|B) =", PA_B)
