@@ -1,0 +1,19 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+X = np.array([[0,0],[0,1],[1,0],[1,1]])
+y = np.array([0,0,0,1])
+
+w = np.array([1,1])
+b = -1.5
+
+z = X @ w + b
+pred = (z >= 0).astype(int)
+
+print("Predictions:", pred)
+
+plt.scatter(X[:,0], X[:,1], c=pred)
+plt.xlabel("X1")
+plt.ylabel("X2")
+plt.title("Perceptron Output")
+plt.show()
