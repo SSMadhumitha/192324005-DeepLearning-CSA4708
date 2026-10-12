@@ -1,0 +1,18 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import entropy
+
+p = np.array([0.8, 0.2])
+q = np.array([0.6, 0.4])
+
+H = entropy(p, base=2)
+CE = -np.sum(p * np.log2(q))
+KL = entropy(p, q, base=2)
+
+print("Entropy:", H)
+print("Cross-Entropy:", CE)
+print("KL Divergence:", KL)
+
+plt.bar(["Entropy", "Cross-Entropy", "KL"], [H, CE, KL])
+plt.title("Information Measures")
+plt.show()
